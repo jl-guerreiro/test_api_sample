@@ -21,7 +21,7 @@
             </li>
         </ol>
         <br />
-        <a href="#" v-on:click="toggleAll()">Accept All</a>
+        <a href="#" v-on:click="toggleAll()">Mark All</a>
         <br />
         <a href="#" v-on:click="untoggleAll()">Unmark All</a>
         <br /><br />
@@ -42,9 +42,7 @@
                 newDone: false
             },
             beforeMount(){
-                axios
-                     .get('https://8080-amethyst-cheetah-q8w7iq22.ws-us11.gitpod.io/todo')
-                     .then(response => (this.todos = response.data))
+                this.getTodoList();
             },
             methods: {
                 toggle: function (todo) {
@@ -61,9 +59,20 @@
                     }
                 },
                 addOne: function () {
-                    this.todos.push({ text: this.newTodo, done: this.newDone });
+                    this.addTodoList(this.newTodo,this.newDone);
                     this.newTodo = "";
                     this.newDone = false;
+                },
+                getTodoList: function(){
+                    axios
+                     .get('/todo')
+                     .then(response => (this.todos = response.data));
+                },
+                addTodoList: function(vText,vDone){
+                    axios
+                        .post('/todo',
+                         { text: vText, done: vDone })
+                         .then(response => (this.todos = response.data));
                 }
             }
         })
