@@ -1,0 +1,72 @@
+<html>
+
+<head>
+    <link th:href="@{/sakura.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="app">
+        <h2>To-dos:</h2>
+        <ol>
+            <li v-for="todo in todos">
+                <label>
+                    <input type="checkbox" v-on:change="toggle(todo)" v-bind:checked="todo.done">
+                    <del v-if="todo.done">
+                        {{ todo.text }}
+                    </del>
+                    <span v-else>
+                        {{ todo.text }}
+                    </span>
+                </label>
+            </li>
+        </ol>
+        <br />
+        <a href="#" v-on:click="toggleAll()">Accept All</a>
+        <br />
+        <a href="#" v-on:click="untoggleAll()">Unmark All</a>
+        <br /><br />
+        <form>
+            Add new to-do:<input v-model="newTodo" type="text" />
+            Done:<input v-model="newDone" type="checkbox" /><br />
+            <a href="#" v-on:click="addOne()">Submit</a>
+        </form>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                todos: [],
+                newTodo: "",
+                newDone: false
+            },
+            beforeMount(){
+                axios
+                     .get('https://8080-amethyst-cheetah-q8w7iq22.ws-us11.gitpod.io/todo')
+                     .then(response => (this.todos = response.data))
+            },
+            methods: {
+                toggle: function (todo) {
+                    todo.done = !todo.done
+                },
+                toggleAll: function () {
+                    for (let todo of this.todos) {
+                        todo.done = true;
+                    }
+                },
+                untoggleAll: function () {
+                    for (let todo of this.todos) {
+                        todo.done = false;
+                    }
+                },
+                addOne: function () {
+                    this.todos.push({ text: this.newTodo, done: this.newDone });
+                    this.newTodo = "";
+                    this.newDone = false;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
