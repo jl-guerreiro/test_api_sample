@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ApisamplesApplication<apisamples>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.jl.sample.apisamples.ApisamplesApplication",
+            "projectName": "apisamples",
+            "args": ""
+        }
+    ]
+}
