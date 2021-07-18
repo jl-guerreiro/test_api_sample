@@ -18,6 +18,7 @@
                         {{ todo.text }}
                     </span>
                 </label>
+                <img style="width: 16px; height: 16px;" th:src="@{/redx.jpg}" v-on:click="deleteOne(todo.text,todo.done)"/>
             </li>
         </ol>
         <br />
@@ -46,22 +47,37 @@
             },
             methods: {
                 toggle: function (todo) {
-                    todo.done = !todo.done
+                    todo.done = !todo.done;
+                    this.toggleOne(todo);  
                 },
                 toggleAll: function () {
                     for (let todo of this.todos) {
                         todo.done = true;
+                        this.toggleOne(todo);
                     }
                 },
                 untoggleAll: function () {
                     for (let todo of this.todos) {
                         todo.done = false;
+                        this.toggleOne(todo);
                     }
+                },
+                toggleOne: function(todo){
+                    axios
+                        .post('/todo/toggle',
+                         { text: todo.text, done: todo.done })
+                         .then(response => (this.todos = response.data));
                 },
                 addOne: function () {
                     this.addTodoList(this.newTodo,this.newDone);
                     this.newTodo = "";
                     this.newDone = false;
+                },
+                deleteOne: function(vText,vDone){
+                    axios
+                        .post('/todo/delete',
+                         { text: vText, done: vDone })
+                         .then(response => (this.todos = response.data));
                 },
                 getTodoList: function(){
                     axios

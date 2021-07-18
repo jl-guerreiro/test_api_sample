@@ -25,4 +25,14 @@ public class TodoList {
         this.todoList.add(todo);
     }
 
+    public void delete(Todo todo){
+        this.todoList.removeIf(x -> (x.getText().equals(todo.getText())));
+    }
+
+    public void toggle(Todo todo){
+        this.todoList.stream()
+        .filter(x -> (x.getText().equals(todo.getText())))
+        .forEach(x -> x.setDone(todo.getDone()));
+    }
+
 }

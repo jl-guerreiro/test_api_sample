@@ -30,4 +30,16 @@ public class SampleController {
         return todoList.getList();
     }
 
+    @PostMapping(TODO + "/delete")
+    public ArrayList<Todo> deleteOne(@RequestBody Todo todo){
+        todoList.delete(todo);
+        return todoList.getList();
+    }
+
+    @PostMapping(TODO + "/toggle")
+    public ArrayList<Todo> toggleOne(@RequestBody Todo todo){
+        todoList.toggle(todo);
+        return todoList.getList();
+    }
+
 }
